@@ -1,0 +1,12 @@
+{
+  "name": "taskearn-pwa",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "firebase deploy",
+    "emulate": "firebase emulators:start"
+  },
+  "devDependencies": {
+    "firebase-tools": "^14.0.0"
+  }
+}
