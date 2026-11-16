@@ -1,15 +1,53 @@
 <!doctype html>
-<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101827"><title>TaskEarn</title><link rel="stylesheet" href="style.css"></head>
-<body><header><a class="logo">TaskEarn<span>.</span></a><button id="theme">☼</button></header><main>
-<section id="login" class="panel login"><div class="mark">T</div><h1>TaskEarn-এ স্বাগতম</h1><p>ডেমো অ্যাকাউন্ট দিয়ে পরীক্ষা করুন</p><form id="loginForm"><label>তোমার নাম</label><input id="name" required maxlength="40" placeholder="নাম লিখো"><button class="primary">প্রবেশ করো</button></form><small>এটি শুধুই UI ডেমো। বাস্তব অ্যাকাউন্ট বা পেমেন্ট নেই।</small></section>
-<section id="app" class="hidden"><div class="welcome"><div><small>তোমার ড্যাশবোর্ড</small><h1>হ্যালো, <b id="displayName">বন্ধু</b> 👋</h1></div><button id="logout">লগআউট</button></div>
-<div class="balance"><span>মোট পয়েন্ট</span><strong id="points">0</strong><div>আনুমানিক মূল্য: ৳<b id="taka">0.00</b></div><small>১০০ পয়েন্ট = ১ টাকা (ডেমো হিসাব)</small></div>
-<div class="heading"><div><small>আজকের কাজ</small><h2>টাস্ক সম্পন্ন করো</h2></div><span class="tag">ডেমো</span></div>
-<div class="tasks"><article class="panel"><div class="ico">❓</div><h3>দ্রুত কুইজ</h3><p>একটি সহজ প্রশ্নের উত্তর দাও।</p><div class="taskfoot">+৫০ পয়েন্ট <button data-task="quiz">শুরু</button></div></article>
-<article class="panel"><div class="ico">📅</div><h3>দৈনিক চেক-ইন</h3><p>প্রতিদিন একবার চেক-ইন।</p><div class="taskfoot">+২৫ পয়েন্ট <button data-task="checkin">নাও</button></div></article>
-<article class="panel"><div class="ico">▶</div><h3>বিজ্ঞাপন টাস্ক</h3><p>বিজ্ঞাপন যাচাই এখনো যুক্ত হয়নি।</p><div class="taskfoot">বন্ধ <button disabled>শিগগিরই</button></div></article></div>
-<div class="heading"><div><small>পয়েন্ট ব্যবস্থাপনা</small><h2>ওয়ালেট</h2></div></div><section class="panel"><b>সর্বনিম্ন অনুরোধ: ১০,০০০ পয়েন্ট</b><p>এখানে bKash/Nagad-এ বাস্তব টাকা পাঠানো হয় না।</p><button class="primary" id="withdraw">ডেমো উইথড্র অনুরোধ</button></section>
-<div class="heading"><div><small>সাম্প্রতিক কার্যক্রম</small><h2>ইতিহাস</h2></div></div><section class="panel" id="history">এখনো কোনো কার্যক্রম নেই।</section></section>
-<footer>TaskEarn © 2026 · পরীক্ষামূলক সংস্করণ</footer></main>
-<dialog id="quiz"><form id="quizForm" class="dialog"><button type="button" class="close" data-close>×</button><small>কুইজ টাস্ক</small><h2>বাংলাদেশের রাজধানী কোনটি?</h2><label class="choice"><input type="radio" name="answer" value="ঢাকা" required> ঢাকা</label><label class="choice"><input type="radio" name="answer" value="চট্টগ্রাম"> চট্টগ্রাম</label><label class="choice"><input type="radio" name="answer" value="রাজশাহী"> রাজশাহী</label><button class="primary">জমা দাও</button></form></dialog>
-<dialog id="withdrawDialog"><form id="withdrawForm" class="dialog"><button type="button" class="close" data-close>×</button><small>ডেমো অনুরোধ</small><h2>উইথড্র</h2><label>মাধ্যম</label><select><option>bKash</option><option>Nagad</option></select><label>নম্বর</label><input id="wallet" inputmode="tel" placeholder="01XXXXXXXXX" required><p>শুধু UI পরীক্ষা; কোনো পেমেন্ট হবে না।</p><button class="primary">অনুরোধ জমা</button></form></dialog><div id="toast"></div><script src="script.js"></script></body></html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090d18"><meta name="description" content="TaskEarn — tasks, rewards and wallet dashboard.">
+  <title>TaskEarn — Earn with Tasks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="TaskEarn home"><span class="brand-mark">t<span>+</span></span><span>task<span class="brand-accent">earn</span><i>.</i></span></a>
+    <nav class="desktop-nav"><a class="active" href="#home">হোম</a><a href="#how">কীভাবে কাজ করে</a><a href="#tasks">টাস্ক</a><a href="#rewards">রিওয়ার্ড</a></nav>
+    <div class="top-actions"><button class="icon-btn" id="themeBtn" aria-label="থিম পরিবর্তন">☼</button><button class="btn btn-ghost" data-open-auth="login">লগইন</button><button class="btn btn-primary" data-open-auth="register">শুরু করুন <span>↗</span></button><button class="menu-btn" id="menuBtn" aria-label="মেনু">☰</button></div>
+  </header>
+  <main id="home">
+    <section class="hero wrap">
+      <div class="hero-copy"><div class="eyebrow"><span class="pulse"></span> TASKS. POINTS. REWARDS.</div>
+        <h1>ছোট ছোট কাজ,<br><em>বড় সম্ভাবনা।</em></h1>
+        <p class="hero-lead">সহজ অনলাইন টাস্ক সম্পন্ন করে পয়েন্ট সংগ্রহের একটি স্মার্ট প্ল্যাটফর্ম। নিজের অগ্রগতি দেখুন এক জায়গায়।</p>
+        <div class="hero-actions"><button class="btn btn-primary btn-large" data-open-auth="register">অ্যাকাউন্ট খুলুন <span>↗</span></button><a class="text-link" href="#how">কীভাবে কাজ করে <b>→</b></a></div>
+        <div class="trust-line"><div class="avatar-stack"><span>A</span><span>T</span><span>+</span></div><span>স্বচ্ছ নিয়ম · সহজ ড্যাশবোর্ড · পরিষ্কার হিসাব</span></div>
+      </div>
+      <div class="hero-art" aria-label="TaskEarn dashboard preview">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="float-chip chip-top"><span class="chip-icon">✦</span><span><b>Task completed</b><small>অগ্রগতি ট্র্যাক করুন</small></span><strong>+50</strong></div>
+        <div class="dashboard-card">
+          <div class="dash-head"><div><small>YOUR OVERVIEW</small><h3>ওয়ালেট সামারি</h3></div><span class="live-dot">PREVIEW</span></div>
+          <div class="dash-balance"><div><small>মোট পয়েন্ট</small><strong>০ <sup>PTS</sup></strong></div><div class="coin-art">✧</div></div>
+          <div class="dash-foot"><span>পয়েন্ট হিসাব</span><b>অ্যাকাউন্ট চালু হলে দেখাবে</b></div>
+          <div class="mini-chart"><span style="height:28%"></span><span style="height:44%"></span><span style="height:37%"></span><span style="height:62%"></span><span style="height:49%"></span><span style="height:78%"></span><span style="height:58%"></span><span style="height:92%"></span><span style="height:71%"></span><span style="height:100%"></span><span style="height:81%"></span><span style="height:90%"></span></div>
+          <div class="chart-labels"><span>সাপ্তাহিক অ্যাক্টিভিটি</span><span>ডেমো ভিজ্যুয়াল</span></div>
+        </div>
+        <div class="float-chip chip-bottom"><span class="check-icon">✓</span><span><b>এক জায়গায় সব</b><small>টাস্ক · ওয়ালেট · হিস্ট্রি</small></span></div>
+      </div>
+    </section>
+    <section class="notice wrap"><span class="notice-icon">i</span><p><b>প্রিভিউ সংস্করণ:</b> ওয়েবসাইটের ডিজাইন ও নেভিগেশন পরীক্ষা করতে পারবেন। আসল অ্যাকাউন্ট, পয়েন্ট ও পেমেন্ট চালুর আগে সার্ভার/Firebase এবং পেমেন্ট সিস্টেম সংযুক্ত করতে হবে। এখানে কোনো পাসওয়ার্ড বা পেমেন্ট তথ্য জমা হয় না।</p></section>
+    <section class="metrics wrap"><div><strong>০১<span>+</span></strong><small>একটি পরিষ্কার ড্যাশবোর্ড</small></div><div><strong>২৪<span>/</span>৭</strong><small>যেকোনো সময় ব্যবহারযোগ্য ডিজাইন</small></div><div><strong>১০০<span>%</span></strong><small>সহজ ও স্বচ্ছ অভিজ্ঞতার লক্ষ্য</small></div></section>
+    <section class="section wrap" id="how"><div class="section-heading"><div><div class="eyebrow">SIMPLE FLOW</div><h2>শুরু থেকে রিওয়ার্ড—<em>৩টি ধাপ</em></h2></div><p>ব্যবহার সহজ রাখাই আমাদের ডিজাইনের মূল লক্ষ্য।</p></div>
+      <div class="steps"><article class="step-card"><span class="step-no">01</span><div class="step-icon purple">↗</div><h3>অ্যাকাউন্ট তৈরি</h3><p>নিজের অ্যাকাউন্ট খুলে ড্যাশবোর্ডে প্রবেশ করুন।</p></article><article class="step-card"><span class="step-no">02</span><div class="step-icon mint">✦</div><h3>টাস্ক সম্পন্ন</h3><p>নিয়ম মেনে উপলভ্য কাজ শেষ করে পয়েন্ট সংগ্রহ করুন।</p></article><article class="step-card"><span class="step-no">03</span><div class="step-icon orange">◈</div><h3>রিওয়ার্ড অনুরোধ</h3><p>যোগ্যতা পূরণ হলে ওয়ালেট থেকে অনুরোধ পাঠান।</p></article></div>
+    </section>
+    <section class="section task-section" id="tasks"><div class="wrap"><div class="section-heading"><div><div class="eyebrow">EXPLORE TASKS</div><h2>টাস্ক <em>ক্যাটাগরি</em></h2></div><span class="section-note">সার্ভার সংযুক্ত হলে কাজগুলো চালু হবে</span></div>
+      <div class="task-grid"><article class="task-card"><div class="task-icon purple">▤</div><div class="task-tag">QUIZ</div><h3>কুইজ ও জ্ঞান</h3><p>প্রশ্নের উত্তর দিয়ে শেখার পাশাপাশি পয়েন্ট অর্জন।</p><div class="task-bottom"><span>রিওয়ার্ড <b>নির্ধারিত হবে</b></span><span class="lock">শিগগিরই ↗</span></div></article><article class="task-card"><div class="task-icon mint">◷</div><div class="task-tag">DAILY</div><h3>দৈনিক অ্যাক্টিভিটি</h3><p>প্রতিদিনের নির্ধারিত অ্যাক্টিভিটি সম্পন্ন করুন।</p><div class="task-bottom"><span>রিওয়ার্ড <b>নির্ধারিত হবে</b></span><span class="lock">শিগগিরই ↗</span></div></article><article class="task-card"><div class="task-icon orange">◎</div><div class="task-tag">SPECIAL</div><h3>বিশেষ টাস্ক</h3><p>নতুন ক্যাম্পেইন ও বিশেষ কাজের আপডেট দেখুন।</p><div class="task-bottom"><span>রিওয়ার্ড <b>নির্ধারিত হবে</b></span><span class="lock">শিগগিরই ↗</span></div></article></div>
+    </div></section>
+    <section class="section wrap rewards" id="rewards"><div class="reward-copy"><div class="eyebrow">WALLET & REWARDS</div><h2>আপনার পয়েন্ট,<br><em>আপনার হিসাব।</em></h2><p>ওয়ালেট, লেনদেনের ইতিহাস এবং রিওয়ার্ড অনুরোধ—সবকিছু এক জায়গায় রাখার জন্য তৈরি।</p><ul><li><span>✓</span> পয়েন্ট ব্যালেন্স ও হিস্ট্রি</li><li><span>✓</span> অনুরোধের স্ট্যাটাস ট্র্যাকিং</li><li><span>✓</span> যাচাইকৃত পেমেন্ট প্রক্রিয়া</li></ul><small class="muted">এই ফিচারগুলো ব্যাকএন্ড ও অনুমোদিত পেমেন্ট ইন্টিগ্রেশন যুক্ত হওয়ার পরই কার্যকর হবে।</small></div><div class="reward-visual"><div class="wallet-card"><div class="wallet-top"><span>taskearn<span class="brand-accent">.</span></span><span class="wallet-symbol">✧</span></div><small>AVAILABLE BALANCE</small><strong>— — —</strong><div class="wallet-bottom"><span>POINT WALLET</span><span>••••  ••••</span></div></div><div class="reward-orb">✦</div></div></section>
+    <section class="cta wrap"><div><div class="eyebrow">YOUR NEXT STEP</div><h2>একটি সুন্দর অভিজ্ঞতার<br><em>শুরু এখান থেকেই।</em></h2></div><button class="btn btn-primary btn-large" data-open-auth="register">অ্যাকাউন্ট খুলুন <span>↗</span></button></section>
+  </main>
+  <footer class="footer"><div class="wrap footer-inner"><a class="brand" href="#home"><span class="brand-mark">t<span>+</span></span><span>task<span class="brand-accent">earn</span><i>.</i></span></a><span>© 2026 TaskEarn. All rights reserved.</span><a href="#home">উপরে যান ↑</a></div><div class="wrap footer-disclaimer">Preview build · Backend, account verification and payouts are not connected.</div></footer>
+  <dialog id="authDialog" class="auth-dialog"><button class="dialog-close" id="closeAuth" aria-label="বন্ধ করুন">×</button><div class="auth-mark">t<span>+</span></div><div class="eyebrow">TASK EARN ACCOUNT</div><h2 id="authTitle">অ্যাকাউন্ট খুলুন</h2><p>অ্যাকাউন্ট সিস্টেম এখনো সংযুক্ত হয়নি। এটি শুধু ডিজাইন প্রিভিউ।</p><div class="auth-fields"><label>ইমেইল<input type="email" placeholder="name@example.com" disabled></label><label>পাসওয়ার্ড<input type="password" placeholder="সার্ভার সংযুক্ত হলে চালু হবে" disabled></label></div><button class="btn btn-primary auth-submit" id="authNotice">প্রিভিউ বুঝেছি</button><small>এই ফর্মে কোনো তথ্য পাঠানো বা সংরক্ষণ করা হয় না।</small></dialog>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body></html>
